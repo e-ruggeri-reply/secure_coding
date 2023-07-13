@@ -43,6 +43,7 @@ public class FeedbackAPI extends NotSecureBankAPI {
         String email;
         String subject;
         String comments;
+        String scriptTag = "<script>"
 
         try {
             name = (String) myJson.get("name");
@@ -53,6 +54,16 @@ public class FeedbackAPI extends NotSecureBankAPI {
             LOG.error(e.toString());
             return Response.status(400).entity("{\"Error\": \"Body does not contain all the correct attributes\"}").build();
         }
+
+        if( name.contains(scrptTage)
+            || email.contains(scriptTag)
+            || subject.contains(scriptTag)
+            || comments.contains(scriptTag) ) 
+        {
+            return Response.status(400).entity("{\"Error\": \"Input not well-formatted\"}");
+        }
+
+
 
         String feedbackId = OperationsUtil.sendFeedback(name, email, subject, comments);
 
