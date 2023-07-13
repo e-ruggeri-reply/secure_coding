@@ -50,8 +50,11 @@ public class AccountViewServlet extends HttpServlet {
             String startTime = request.getParameter("startDate");
             String endTime = request.getParameter("endDate");
 
-            LOG.info("Transactions within '" + startTime + "' and '" + endTime + "'.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/bank/transaction.jsp?" + ((startTime != null) ? "&startTime=" + startTime : "") + ((endTime != null) ? "&endTime=" + endTime : ""));
+            DateFormat defaultDateTimeFormat DateFormat.getDateTimeInstance();
+            Date validatedStartTime = defaultDateTimeFormat.parse(startTime);
+            Date validatedEndTime = defaultDateTimeFormat.parse(endTime);
+            LOG.info("Transactions within '" + validatedStartTime.toString() + "' and '" + validatedEndTime.toString() + "'.");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/bank/transaction.jsp?" + ((validatedStartTime != null) ? "&startTime=" + validatedStartTime.toString(): "") + ((validatedEndTime != null) ? "&endTime=" + validatedEndTime.toString() : ""));
             dispatcher.forward(request, response);
         }
     }
