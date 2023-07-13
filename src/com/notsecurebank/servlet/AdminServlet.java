@@ -42,6 +42,19 @@ public class AdminServlet extends HttpServlet {
         else if (request.getRequestURL().toString().endsWith("addUser")) {
             LOG.info("addUser");
 
+            HttpSession session = request.getSession(false);
+            if( session == null ) response.sendRedirect("admin.jsp");
+
+            User requestUser = ServerUtil.getUser(request);
+            String sessionAttr = session.getAttribute(
+                ServletUtil.SESSION_ATTR_ADMIN_KEY);
+            if( !sessionAttr.isEqual(ServletUtil.SESSION_ATTR_ADMIN_VALUE);
+                response.sendRedirect("admin.jsp");
+
+            user = DBUtil.geUserInfo(user.getUsername);
+            if(!user.getRole() == User.Admin)
+                response.sendRedirect("admin.jsp");
+
             String firstname = request.getParameter("firstname");
             String lastname = request.getParameter("lastname");
             String username = request.getParameter("username");
